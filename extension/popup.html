@@ -3,15 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hello Popup</title>
+    <title>TFL Popup</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <div class="container">
         <h1>Next trains at Wembley Park</h1>
-        <div id="results">Loading…</div>
+        <div class="refresh-row">
+            <button class="refresh-button" id="refreshBtn">Refresh</button>
+            <p class="refresh-time" id="refreshTime">Loading…</p>
+        </div>
+
+        <div class="tube-board-grid" id="platforms"></div>
     </div>
 
     <script src="popup.js"></script>
-</body>
-</html>
+    </body>
+    </html>
