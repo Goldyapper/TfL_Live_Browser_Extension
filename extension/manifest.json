@@ -7,5 +7,5 @@
         "default_title": "Hello Popup",
         "default_popup": "popup.html"
     },
-    "permissions": []
+    "permissions": [ "https://api.tfl.gov.uk/"]
 }
