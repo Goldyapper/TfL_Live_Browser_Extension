@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Hello Popup",
+    "version": "1.0",
+    "description": "Simple extension that displays a hello text in the popup.",
+    "action": {
+        "default_title": "Hello Popup",
+        "default_popup": "popup.html"
+    },
+    "permissions": []
+}
