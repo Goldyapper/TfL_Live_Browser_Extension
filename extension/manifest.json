@@ -2,10 +2,19 @@
     "manifest_version": 3,
     "name": "Live TFL Popup",
     "version": "1.0",
-    "description": "Shows the upcoming trains at Wembley park",
+    "description": "Shows the upcoming trains at any given TFL station",
     "action": {
         "default_title": "TFL trains",
         "default_popup": "popup.html"
     },
-    "permissions": [ "https://api.tfl.gov.uk/"]
+    "icons": {
+        "16": "tfl-logo.png",
+        "32": "tfl-logo.png",
+        "48": "tfl-logo.png",
+        "128": "tfl-logo.png"
+    },
+    "permissions": [],
+    "host_permissions": [
+        "https://api.tfl.gov.uk/*"
+    ]
 }
