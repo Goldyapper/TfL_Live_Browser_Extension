@@ -1,22 +1,22 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>TFL Popup</title>
-    <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-    <div class="container">
-        <h1>Next trains at Wembley Park</h1>
-        <div class="refresh-row">
-            <button class="refresh-button" id="refreshBtn">Refresh</button>
-            <p class="refresh-time" id="refreshTime">Loading…</p>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>TFL Popup</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Live Tube Departure Board</h1>
+            <div class="refresh-row">
+                <select id="stationSelect" class="station-select"></select>
+                <button class="refresh-button" id="refresh-button">Refresh</button>
+            </div>
+            <p class="refresh-time" id="refreshTime">Select a station...</p>
+            <div class="tube-board-grid" id="platforms"></div>
         </div>
-
-        <div class="tube-board-grid" id="platforms"></div>
-    </div>
-
-    <script src="popup.js"></script>
+        <script src="station_ids.js"></script>
+        <script src="popup.js"></script>
     </body>
-    </html>
+</html>

@@ -96,12 +96,11 @@ h1 {
 .line-Circle { background-color: #FFD300; color: black; }
 .line-District { background-color: #00782A; }
 .line-Elizabeth-line { background-color: #6950A1; }
-.line-Hammersmith-and-city { background-color: #F3A9BB; color: black; }
+.line-Hammersmith-and-City { background-color: #F3A9BB; color: black; }
 .line-Jubilee { background-color: #A0A5A9; }
 .line-Metropolitan { background-color: #9B0056; }
-.line-Northern { background-color: #000000; }
+.line-Northern {background-color: #ffffff;color: #000000;}
 .line-Piccadilly { background-color: #003688; }
 .line-Victoria { background-color: #0098D4; }
-.line-Waterloo-and-city { background-color: #95CDBA; color: black; }
-.line-Dlr { background-color: #00AFAD; }
-.line-Overground { background-color: #EE7C0E; }
+.line-Waterloo-and-City { background-color: #95CDBA; color: black; }
+.line-Liberty, .line-Lioness, .line-Mildmay, .line-Suffragette, .line-Weaver, .line-Windrush { background-color: #EE7C0E; }

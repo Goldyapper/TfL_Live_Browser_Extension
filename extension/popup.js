@@ -1,23 +1,51 @@
+// Populate dropdown with station names
+function populateStationDropdown() {
+    const dropdown = document.getElementById("stationSelect");
+    dropdown.innerHTML = "";//clear the current dropdown, ready for population
+
+    Object.keys(station_ids)
+        .sort((a, b) => a.localeCompare(b))//sort alphabetically and create an option for each station
+        .forEach(station => {
+        const option = document.createElement("option");
+        option.value = station; //station name used to look up
+        option.textContent = station;//what the user sees
+        dropdown.appendChild(option);
+        });
+
+    // Set default to Wembley Park
+    dropdown.value = "Wembley Park";
+}
+
 // Simple JavaScript to demonstrate interaction (optional).
-async function loadDepartures()  {
-    const stopPointId = '940GZZLUWYP';
+async function loadDepartures(stationName)  {
+    const stopPointIds = station_ids[stationName];
     const container = document.getElementById("platforms");
     const refreshTime = document.getElementById("refreshTime");
-
+    
+    // Handle unknown stations
+    if (!stopPointIds) {
+        container.innerHTML = `<p style="color:red;">Unknown station.</p>`;
+        return;
+    }
     container.innerHTML = "<p>Loading live departures…</p>"; //temp mesage whulst its fetching api data
+    let arrivals = [];
 
-        try{
-
-        const res = await fetch(`https://api.tfl.gov.uk/StopPoint/${stopPointId}/Arrivals`);
-        const data = await res.json();
+    try{
+        // Some stations have multiple StopPoints (e.g., paddington)
+        // Fetch all of them from api and combine into one arrivals array
+        for (const id of stopPointIds) {
+            const res = await fetch(`https://api.tfl.gov.uk/StopPoint/${id}/Arrivals`);
+            const data = await res.json();
+            arrivals = arrivals.concat(data);
+        }
         // data is an array of arrival predictions
         // Sort by time to station 
-        data.sort((a, b) => a.timeToStation - b.timeToStation);//soonest trains first
+        arrivals.sort((a, b) => a.timeToStation - b.timeToStation);//soonest trains first
             
         const platforms = {};
         const seen = new Set();
 
-        data.forEach(arr => { //loop thru each arrival
+        arrivals.forEach(arr => { //loop thru each arrival
             const platform = arr.platformName;
             if (!platform) return; //if empty skip
 
@@ -48,41 +76,62 @@ async function loadDepartures()  {
                 minutes: Math.floor(arr.timeToStation / 60),
                 line
             });
-            });
+        });
 
-            //sort platforms by no
-            const sorted = Object.entries(platforms).sort((a, b) => {
-            const aNum = parseInt(a[0].match(/Platform (\d+)/)?.[1] || 999);
-            const bNum = parseInt(b[0].match(/Platform (\d+)/)?.[1] || 999);
-            return aNum - bNum;
-            });
+        //sort platforms by no
+        const sorted = Object.entries(platforms).sort((a, b) => {
+        const aNum = parseInt(a[0].match(/Platform (\d+)/)?.[1] || 999);
+        const bNum = parseInt(b[0].match(/Platform (\d+)/)?.[1] || 999);
+        return aNum - bNum;
+        });
 
-            const now = new Date();
-            refreshTime.textContent = `Updated at ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        const now = new Date();
+        refreshTime.textContent = `Updated at ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
 
 
-            //to render all platforms section in the pop up
-            container.innerHTML = sorted.map(([label, trains]) => `
+        //to render all platforms section in the pop up
+        container.innerHTML = sorted.map(([label, trains]) => `
             <div class="platform-depature-board">
                 <h3>${label}</h3>
                 ${trains.map((t, i) => `
                     <p>
                     <b>${i + 1}.</b> ${t.destination}
-                    <span class="line-badge line-${t.line.replace(/\s+/g, '-')}">
-                    ${t.line.replace('-', ' ')}
+                    <span class="line-badge line-${t.line
+                        .replace(/&/g, 'and')   // replace & with 'and'
+                        .replace(/\s+/g, '-')   // spaces → hyphens
+                        }">
+                        ${t.line.replace('-', ' ')}
                     </span>
                     — ${t.minutes} min
                 </p>
                 `).join("")}
             </div>
-            `).join("");
+        `).join("");
 
     } catch (err) {
         console.error("TfL fetch error:", err);
         container.innerHTML = `<p style="color:red;">Could not load TfL data.</p>`;
     }
 }
-//run load departure automatically
-document.addEventListener("DOMContentLoaded", loadDepartures);
-//reload data when clicked
-document.getElementById("refreshBtn").addEventListener("click", loadDepartures);
+//Setup event listeners
+document.addEventListener("DOMContentLoaded", () => {
+    // populate the dropdown with all station names
+    populateStationDropdown();
+
+    // Get references to dropdown and refresh button
+    const dropdown = document.getElementById("stationSelect");
+    const refreshBtn = document.getElementById("refresh-button");
+
+    // Load default statio
+    loadDepartures(dropdown.value);
+
+    // Whenever user selects a different station, fetch new data
+    dropdown.addEventListener("change", () => {
+        loadDepartures(dropdown.value);
+    });
+
+    //reload data for the currently selected station
+    refreshBtn.addEventListener("click", () => {
+        loadDepartures(dropdown.value);
+    });
+});
