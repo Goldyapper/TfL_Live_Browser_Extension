@@ -4,10 +4,10 @@ A Chromium-compatible browser extension that displays **live TFL departures** fr
 It also includes a **demo HTML form** to showcase DOM injection and autofill capabilities using live data.
 
 ## Project Structure
-
+```
 ZEROKEY_DEVELOPER_EXERCISE/
 │
-├── extension/ # Browser extension  code
+├── extension/
 │ ├── extention-style.css
 │ ├── manifest.json
 │ ├── popup.html
@@ -22,7 +22,7 @@ ZEROKEY_DEVELOPER_EXERCISE/
 │ └── form-style.css
 │
 └── README.md
-
+```
 ## API Used
 
 ### Transport for London (TfL) Unified API
