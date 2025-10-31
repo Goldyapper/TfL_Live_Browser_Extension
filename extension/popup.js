@@ -157,18 +157,28 @@ document.getElementById("fill-form-button").addEventListener("click", async() =>
         // Extract platform and line info
         const platforms = new Set();
         const lines = new Set();
-        const currentTime = Date.now();
         let upcomingCount = 0;
 
         arrivals.forEach(a => {
-            if (a.platformName) platforms.add(a.platformName.replace(/\s+/g, " "));
+            if (a.platformName) {
+                const match = /Platform\s*(\d+)/i.exec(a.platformName);
+                const platformLabel = match ? `Platform ${match[1]}` : a.platformName.trim();
+                platforms.add(platformLabel);
+            }
             if (a.lineName) lines.add(a.lineName);
             if (a.timeToStation <= 300) upcomingCount++;
         });
+        
+        //sort platrforms numerically
+        const platformArray = Array.from(platforms).sort((a, b) => {
+            const numA = Number.parseInt(a.match(/\d+/));
+            const numB = Number.parseInt(b.match(/\d+/));
+            return numA - numB;
+            });
 
         const formData = {
             station: stationName,
-            platforms: Array.from(platforms).join(", "),
+            platforms: platformArray.join(", "),
             lines: Array.from(lines).join(", "),
             upcoming: upcomingCount
         };

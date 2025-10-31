@@ -10,7 +10,7 @@
             <h1 class="title">TfL Form</h1>
             <p class="sub">Fill out details about a station of your choice</p>
 
-            <form class="train-form" action="/Train-Form" method="post">
+            <form id="train-form" class="train-form" action="/Train-Form" method="post">
                 <div class="form-group">
                     <label for="station">Station Selected:</label>
                     <input id="station" type="text" name="station" required />
@@ -35,6 +35,13 @@
                     <button class="button" type="submit">Submit</button>
                 </div>
             </form>
+
+            <div id="successMessage" class="success-message hidden">
+                <h2> Station Info Submitted!</h2>
+                <p>Your data has been Submitted successfully.</p>
+                <button class="button" id="returnButton">Return to Form</button>
+            </div>
         </div>
+        <script src="form.js"></script>
     </body>
 </html>
