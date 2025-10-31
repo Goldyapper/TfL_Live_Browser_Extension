@@ -13,8 +13,9 @@
         "48": "tfl-logo.png",
         "128": "tfl-logo.png"
     },
-    "permissions": [],
+    "permissions": ["scripting", "activeTab"],
     "host_permissions": [
-        "https://api.tfl.gov.uk/*"
+        "https://api.tfl.gov.uk/*",
+        "file:///*" 
     ]
 }

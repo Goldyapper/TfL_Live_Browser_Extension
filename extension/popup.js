@@ -16,7 +16,6 @@ function populateStationDropdown() {
     dropdown.value = "Wembley Park";
 }
 
-// Simple JavaScript to demonstrate interaction (optional).
 async function loadDepartures(stationName)  {
     const stopPointIds = station_ids[stationName];
     const container = document.getElementById("platforms");
@@ -135,3 +134,72 @@ document.addEventListener("DOMContentLoaded", () => {
         loadDepartures(dropdown.value);
     });
 });
+
+// Form injection
+document.getElementById("fill-form-button").addEventListener("click", async() => {
+    try{
+        const dropdown = document.getElementById("stationSelect");
+        const stationName = dropdown.value;
+        const stopPointIds = station_ids[stationName];
+        if (!stopPointIds){
+            alert("Please select a station first")
+            return;
+        }
+
+        // Fetch live data for the selected station
+        let arrivals = [];
+        for (const id of stopPointIds) {
+            const res = await fetch(`https://api.tfl.gov.uk/StopPoint/${id}/Arrivals`);
+            const data = await res.json();
+            arrivals = arrivals.concat(data);
+        }
+
+        // Extract platform and line info
+        const platforms = new Set();
+        const lines = new Set();
+        const currentTime = Date.now();
+        let upcomingCount = 0;
+
+        arrivals.forEach(a => {
+            if (a.platformName) platforms.add(a.platformName.replace(/\s+/g, " "));
+            if (a.lineName) lines.add(a.lineName);
+            if (a.timeToStation <= 300) upcomingCount++;
+        });
+
+        const formData = {
+            station: stationName,
+            platforms: Array.from(platforms).join(", "),
+            lines: Array.from(lines).join(", "),
+            upcoming: upcomingCount
+        };
+
+        //get current tab
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true});
+
+        //inject form data function into the tab
+        await chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            func: fillTFLForm,
+            args:[formData]
+        });
+
+        alert(`Filled form for ${stationName}`)
+    }
+    catch (err) {
+        console.error("Form injection error:", err);
+        alert("Could not fill form. Make sure the form page is open.");
+    }
+});
+
+// This function is injected into the form page
+function fillTFLForm(data) {
+    const safeSet = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+    };
+
+    safeSet("station", data.station);
+    safeSet("platforms", data.platforms);
+    safeSet("lines", data.lines);
+    safeSet("upcoming-trains", data.upcoming);
+}
