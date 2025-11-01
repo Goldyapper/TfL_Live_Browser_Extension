@@ -1,4 +1,4 @@
-# 🚇 TfL Live Departure Board – Browser Extension
+# TfL Live Departure Board – Browser Extension
 
 A Chromium-compatible browser extension that displays **live TFL departures** from the **TFL (Transport for London) Unified API**.  
 It also includes a **demo HTML form** to showcase DOM injection and autofill capabilities using live data.
