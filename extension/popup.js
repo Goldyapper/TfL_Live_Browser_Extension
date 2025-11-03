@@ -12,8 +12,8 @@ function populateStationDropdown() {
         dropdown.appendChild(option);
         });
 
-    // Set default to Wembley Park
-    dropdown.value = "Wembley Park";
+    // Set default to London Bridge
+    dropdown.value = "London Bridge";
 }
 
 async function loadDepartures(stationName)  {
@@ -26,7 +26,7 @@ async function loadDepartures(stationName)  {
         container.innerHTML = `<p style="color:red;">Unknown station.</p>`;
         return;
     }
-    container.innerHTML = "<p>Loading live departures…</p>"; //temp mesage whulst its fetching api data
+    container.innerHTML = "<p>Loading live departures…</p>"; //temp mesage whilst its fetching api data
     let arrivals = [];
 
     try{
@@ -72,7 +72,7 @@ async function loadDepartures(stationName)  {
             //add current trains data to the platrroms
             platforms[label].push({
                 destination,
-                minutes: Math.floor(arr.timeToStation / 60),
+                minutes: Math.floor(rounded / 2),
                 line
             });
         });
@@ -141,11 +141,21 @@ document.getElementById("fill-form-button").addEventListener("click", async() =>
         const dropdown = document.getElementById("stationSelect");
         const stationName = dropdown.value;
         const stopPointIds = station_ids[stationName];
+        
         if (!stopPointIds){
             alert("Please select a station first")
             return;
         }
 
+        //get current tab
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true});
+        const currentUrl = tab.url || "";
+
+        // Check if the page is inside a demo-site folder 
+        if (!currentUrl.includes("/demo-site/form.html")) {
+            alert("Please open the correct demo-site form page before filling.");
+            return;
+        }
         // Fetch live data for the selected station
         let arrivals = [];
         for (const id of stopPointIds) {
@@ -182,9 +192,6 @@ document.getElementById("fill-form-button").addEventListener("click", async() =>
             lines: Array.from(lines).join(", "),
             upcoming: upcomingCount
         };
-
-        //get current tab
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true});
 
         //inject form data function into the tab
         await chrome.scripting.executeScript({
