@@ -137,11 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Form injection
 document.getElementById("fill-form-button").addEventListener("click", async() => {
+    const fillBtn = document.getElementById("fill-form-button");
+    const dropdown = document.getElementById("stationSelect");
+    const stationName = dropdown.value;
+    
+    // Prevent multiple clicks while running
+    fillBtn.disabled = true;
+    fillBtn.textContent = "Filling...";
+
     try{
-        const dropdown = document.getElementById("stationSelect");
-        const stationName = dropdown.value;
         const stopPointIds = station_ids[stationName];
-        
+
         if (!stopPointIds){
             alert("Please select a station first")
             return;
@@ -201,10 +207,13 @@ document.getElementById("fill-form-button").addEventListener("click", async() =>
         });
 
         alert(`Filled form for ${stationName}`)
-    }
-    catch (err) {
+    } catch (err) {
         console.error("Form injection error:", err);
         alert("Could not fill form. Make sure the form page is open.");
+    } finally {
+        // Restore button state
+        fillBtn.disabled = false;
+        fillBtn.textContent = "Fill Form";
     }
 });
 
@@ -230,6 +239,6 @@ function fillTFLForm(data) {
     if (missingFields.length > 0){
         alert(`Some elements were not found on the form: ${missingFields.join(", ")}.`);
     } else {
-        console.log("✅ All form fields filled successfully.");
+        console.log("All form fields filled successfully.");
     }
 }
