@@ -1,0 +1,17 @@
+{
+  "name": "zerokey_developer_excersise",
+  "version": "1.0.0",
+  "description": "A Chromium-compatible browser extension that displays **live TFL departures** from the **TFL (Transport for London) Unified API**.  \r It also includes a **demo HTML form** to showcase DOM injection and autofill capabilities using live data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

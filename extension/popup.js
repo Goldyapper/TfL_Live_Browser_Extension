@@ -242,3 +242,35 @@ function fillTFLForm(data) {
         console.log("All form fields filled successfully.");
     }
 }
+
+// Handle "Save Favourite" button click
+document.getElementById("save-fav-button").addEventListener("click", async () => {
+    const dropdown = document.getElementById("stationSelect");
+    const stationName = dropdown.value;//get station name
+
+    if (!stationName) {
+        alert("Please select a station first!");
+        return;
+    }
+
+    try {
+        // Send a POST request to our Express backend
+        const res = await fetch("http://localhost:4000/api/favourites", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ station: stationName })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            alert(`${stationName} saved to favourites!`);
+        } else {
+            alert(`Error: ${result.error || "Unknown error"}`);
+        }
+
+    } catch (err) {
+        console.error("Error saving favourite:", err);
+        alert("Could not connect to the favourites API. Make sure the server is running.");
+    }
+});
