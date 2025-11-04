@@ -210,13 +210,26 @@ document.getElementById("fill-form-button").addEventListener("click", async() =>
 
 // This function is injected into the form page
 function fillTFLForm(data) {
-    const safeSet = (id, value) => {
-        const el = document.getElementById(id);
-        if (el) el.value = value;
-    };
+    const requiredFields = [
+        { id: "station", value: data.station },
+        { id: "platforms", value: data.platforms },
+        { id: "lines", value: data.lines },
+        { id: "upcoming-trains", value: data.upcoming }
+    ];
 
-    safeSet("station", data.station);
-    safeSet("platforms", data.platforms);
-    safeSet("lines", data.lines);
-    safeSet("upcoming-trains", data.upcoming);
+    let missingFields = [];
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (element){
+            element.value = field.value;
+        } else{
+            missingFields.push(field.id)
+        }
+    });
+
+    if (missingFields.length > 0){
+        alert(`Some elements were not found on the form: ${missingFields.join(", ")}.`);
+    } else {
+        console.log("✅ All form fields filled successfully.");
+    }
 }

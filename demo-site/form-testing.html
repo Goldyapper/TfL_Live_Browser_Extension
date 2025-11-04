@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TFL Form</title>
+        <link rel="stylesheet" href="form-style.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="title">TfL Form</h1>
+            <p class="sub">Fill out details about a station of your choice</p>
+
+            <form id="train-form" class="train-form" action="/Train-Form" method="post">
+                <div class="form-group">
+                    <label for="station">Station Selected:</label>
+                    <input id="station" type="text" name="station" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="platforms">What Platforms are in use?</label>
+                    <input id="platforms" type="text" name="platforms" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="upcoming-trains">How many trains pass through the station in the next 5 minutes?</label>
+                    <input id="upcoming-trains" type="number" name="upcoming-trains" required />
+                </div>
+
+                <div class="form-actions">
+                    <button class="button" type="submit">Submit</button>
+                </div>
+            </form>
+
+            <div id="successMessage" class="success-message hidden">
+                <h2> Station Info Submitted!</h2>
+                <p>Your data has been Submitted successfully.</p>
+                <button class="button" id="returnButton">Return to Form</button>
+            </div>
+        </div>
+        <script src="form.js"></script>
+    </body>
+</html>
