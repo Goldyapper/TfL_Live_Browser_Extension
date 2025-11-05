@@ -12,15 +12,23 @@ ZEROKEY_DEVELOPER_EXERCISE/
 │ ├── manifest.json
 │ ├── popup.html
 │ ├── popup.js
-│ |── README.md # Instructions for loading in 
+│ |── README.md 
 │ ├── station_ids.js
 │ └── tfl-logo.png
 │
-├── demo-site/ # Static form page for injection 
+├── demo-site/ 
 │ ├── form.html
 │ ├── form.js
 │ └── form-style.css
-│
+|
+├──server/
+| ├─ server.js        
+| ├── favourites.json
+| ├── package.json       
+└─ README.md 
+
+
+
 └── README.md
 ```
 ## API Used
@@ -65,3 +73,30 @@ ZEROKEY_DEVELOPER_EXERCISE/
     - Choose a station from the dropdown list.  
     - View live departures fetched from the [TfL API](https://api.tfl.gov.uk/).  
     - Click “Fill Form” to inject data into the local demo form page (`/demo-site/form.html`).
+
+## Local Server (Favourites API)
+
+A lightweight **Express.js server** is included to handle saving and retrieving a user’s favourite stations.
+
+### Endpoints
+
+* `GET /api/favourites` - Returns a list of saved stations.
+* `POST /api/favourites` - Adds a new favourite station with a timestamp.
+
+### Features
+
+* Automatically creates a `favourites.json` file if missing.
+* Prevents duplicate station entries
+* Returns success or error messages.
+* Automatically includes a timestamp (`savedAt`) for each saved favourite.
+
+### Run Instructions
+
+```bash
+cd server
+npm install
+node server.js
+```
+
+Server runs locally at:
+**[http://localhost:4000](http://localhost:4000)**
