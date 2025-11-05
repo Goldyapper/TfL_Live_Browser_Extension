@@ -1,8 +1,6 @@
 [
   {
-    "station": "London Bridge"
-  },
-  {
-    "station": "Kew Gardens"
+    "station": "London Bridge",
+    "savedAt": "2025-11-05T10:45:48.947Z"
   }
 ]

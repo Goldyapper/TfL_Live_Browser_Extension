@@ -21,7 +21,7 @@ app.get("/api/favourites", (req, res) => {
 
 // POST /api/favourites
 app.post("/api/favourites", (req, res) => {
-    const { station, savedAt } = req.body;
+    const { station } = req.body;
     if (!station) return res.status(400).json({ error: "Missing station name" });// validation that station is a stasion
 
     const favourites = JSON.parse(fs.readFileSync(FAV_FILE, "utf-8"));//load favourites
@@ -31,6 +31,8 @@ app.post("/api/favourites", (req, res) => {
         return res.status(400).json({ success: false, error: "Station already saved" });
     }
 
+    // Add timestamp automatically
+    const savedAt = new Date().toISOString();
 
     favourites.push({ station, savedAt });
     fs.writeFileSync(FAV_FILE, JSON.stringify(favourites, null, 2));
